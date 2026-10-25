@@ -196,35 +196,40 @@ def hw2_3(args):
     a = width / height
 
     # HW 2.3: implement this
-    # change np.zeros into the right matrices
-    projection = np.zeros((4, 4), dtype=np.float32)
-    camera_to_screen = np.zeros((4, 4), dtype=np.float32)
-    # use camera.cam_to_world
-    view_matrix = np.zeros((4, 4), dtype=np.float32)
-    world_to_screen = np.zeros((4, 4), dtype=np.float32)
-    
+    projection = np.array([
+        [1.0, 0.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0, 0.0],
+        [0.0, 0.0, 0.0, 1.0],
+        [0.0, 0.0, -1.0, 0.0]
+    ], dtype=np.float32)
+
+    camera_to_screen = np.array([
+        [width / (2.0 * camera.s * a), 0.0, 0.0, width / 2.0],
+        [0.0, -height / (2.0 * camera.s), 0.0, height / 2.0],
+        [0.0, 0.0, 1.0, 0.0],
+        [0.0, 0.0, 0.0, 1.0]
+    ], dtype=np.float32)
+
+    view_matrix = np.linalg.inv(camera.cam_to_world).astype(np.float32)
+    world_to_screen = camera_to_screen @ projection @ view_matrix
+
     screen_vertices_list = []
     inv_depth_list = []
-    for mesh in scene.meshes:
-        # HW 2.3: implement this
-        # change np.zeros into the right matrix
-        # use mesh.model_matrix
-        MVP = np.zeros((4, 4), dtype=np.float32)
-        ones = np.ones((mesh.vertices.shape[0], 1), dtype=mesh.vertices.dtype)
-        vertices = np.concatenate(
-            [mesh.vertices, ones],
-            axis=1
-        )
-        # transform vertices using MVP & homogeneous coordinates division
-        # The resulting vertices should contain
-        # (screen_x, screen_y, inverse_depth).
-        # inverse_depth should be positive
-        # ---
-        # HW 2.3: your code here
-        # ---
-        inv_depth_list.append(np.ascontiguousarray(vertices[:, 2]))
-        screen_vertices_list.append(np.ascontiguousarray(vertices[:, :2]))
 
+    for mesh in scene.meshes:
+        ones = np.ones((mesh.vertices.shape[0], 1), dtype=np.float32)
+        vertices = np.concatenate([mesh.vertices, ones], axis=1)
+
+        model_to_screen = world_to_screen @ mesh.model_matrix
+        vertices_screen = (model_to_screen @ vertices.T).T
+        vertices_screen = vertices_screen / vertices_screen[:, 3:4]
+
+        screen_vertices_list.append(
+            np.ascontiguousarray(vertices_screen[:, :2], dtype=np.float32)
+        )
+        inv_depth_list.append(
+            np.ascontiguousarray(vertices_screen[:, 2], dtype=np.float32)
+        )
     def render(command_encoder, vars, img):
         # Clear color buffer
         command_encoder.clear_texture_float(
@@ -246,7 +251,25 @@ def hw2_3(args):
             for tri_id in range(mesh.faces.shape[0]):
                 # HW 2.3: implement this
                 # (basically the same as HW 2.2)
-
+                face = mesh.faces[tri_id]
+                sp0 = screen_vertices[face[0]]
+                sp1 = screen_vertices[face[1]]
+                sp2 = screen_vertices[face[2]]
+                inv_depth0 = inv_depth[face[0]]
+                inv_depth1 = inv_depth[face[1]]
+                inv_depth2 = inv_depth[face[2]]
+                min_x = math.floor(min(sp0[0], sp1[0], sp2[0]))
+                min_y = math.floor(min(sp0[1], sp1[1], sp2[1]))
+                max_x = math.ceil(max(sp0[0], sp1[0], sp2[0]))
+                max_y = math.ceil(max(sp0[1], sp1[1], sp2[1]))
+                aabb_min = (max(0, min_x), max(0, min_y))
+                aabb_max = (
+                    min(width - 1, max_x),
+                    min(height - 1, max_y),
+                )
+                c0 = tuple(mesh.vertex_colors[face[0]])
+                c1 = tuple(mesh.vertex_colors[face[1]])
+                c2 = tuple(mesh.vertex_colors[face[2]])
                 if aabb_min[0] > aabb_max[0] or aabb_min[1] > aabb_max[1]:
                     continue
 

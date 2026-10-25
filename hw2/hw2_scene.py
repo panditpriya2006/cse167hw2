@@ -187,8 +187,69 @@ def compose_transformations(transformations):
     F = np.eye(4, dtype=np.float32)
 
     for transform in transformations:
-        pass
-        # HW 2.3 TODO: your code here
+        if 'scale' in transform:
+            sx, sy, sz = transform['scale']
+            T = np.diag([sx, sy, sz, 1]).astype(np.float32)
+
+        elif 'translate' in transform:
+            tx, ty, tz = transform['translate']
+            T = np.eye(4, dtype=np.float32)
+            T[:3, 3] = [tx, ty, tz]
+
+        elif 'rotate_x' in transform:
+            angle = np.radians(transform['rotate_x'][0])
+            c, s = np.cos(angle), np.sin(angle)
+            T = np.array([
+                [1, 0, 0, 0],
+                [0, c, -s, 0],
+                [0, s, c, 0],
+                [0, 0, 0, 1]
+            ], dtype=np.float32)
+
+        elif 'rotate_y' in transform:
+            angle = np.radians(transform['rotate_y'][0])
+            c, s = np.cos(angle), np.sin(angle)
+            T = np.array([
+                [c, 0, s, 0],
+                [0, 1, 0, 0],
+                [-s, 0, c, 0],
+                [0, 0, 0, 1]
+            ], dtype=np.float32)
+
+        elif 'rotate_z' in transform:
+            angle = np.radians(transform['rotate_z'][0])
+            c, s = np.cos(angle), np.sin(angle)
+            T = np.array([
+                [c, -s, 0, 0],
+                [s, c, 0, 0],
+                [0, 0, 1, 0],
+                [0, 0, 0, 1]
+            ], dtype=np.float32)
+
+        elif 'lookat' in transform:
+            lookat = transform['lookat']
+            position = np.array(lookat['position'], dtype=np.float32)
+            target = np.array(lookat['target'], dtype=np.float32)
+            up = np.array(lookat['up'], dtype=np.float32)
+
+            forward = target - position
+            forward /= np.linalg.norm(forward)
+
+            right = np.cross(forward, up)
+            right /= np.linalg.norm(right)
+
+            up = np.cross(right, forward)
+
+            T = np.eye(4, dtype=np.float32)
+            T[:3, 0] = right
+            T[:3, 1] = up
+            T[:3, 2] = -forward
+            T[:3, 3] = position
+
+        else:
+            raise ValueError(f"Unknown transformation: {transform}")
+
+        F = T @ F
 
     return F
 
