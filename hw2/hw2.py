@@ -15,27 +15,32 @@ def hw2_1(args):
     slang_device = spy.create_device()
     compute_shader = device.load_compute_shader(slang_device, 'hw2/hw2_1.slang')
     img = buffer.create_texture_2d(slang_device, args.width, args.height)
-
     a = img.width / img.height
     def to_screen(p):
-        # HW2.1: implement this
-        # access "s" using args.s
-        return (0.0, 0.0)
-
+        x = p[0] * args.s
+        y = p[1] * args.s
+        return (
+            (x / a + 1.0) * img.width / 2.0,
+            (1.0 - y) * img.height / 2.0,
+        )
     sp0 = to_screen(args.p0)
     sp1 = to_screen(args.p1)
     sp2 = to_screen(args.p2)
-
     # HW2.1: implement this
-    aabb_min = (0, 0)
-    aabb_max = (10, 10)
-
+    min_x = math.floor(min(sp0[0], sp1[0], sp2[0]))
+    min_y = math.floor(min(sp0[1], sp1[1], sp2[1]))
+    max_x = math.ceil(max(sp0[0], sp1[0], sp2[0]))
+    max_y = math.ceil(max(sp0[1], sp1[1], sp2[1]))
+    aabb_min = (max(0, min_x), max(0, min_y))
+    aabb_max = (
+        min(img.width - 1, max_x),
+        min(img.height - 1, max_y),
+    )
     vars = {'sp0': sp0,
             'sp1': sp1,
             'sp2': sp2,
             'aabb_min': aabb_min,
             'color': args.color}
-
     def render(command_encoder, vars, img):
         # Clear the image to background color
         command_encoder.clear_texture_float(img, clear_value=spy.float4(0.5, 0.5, 0.5, 1.0))
