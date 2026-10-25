@@ -84,7 +84,14 @@ def hw2_2(args):
 
     def to_screen(p):
         # HW2.2: implement this (basically the same as HW2.1)
-        return (0.0, 0.0)
+        # p is in camera space (x, y, z)
+        # Eq. (1): project to image plane (z = -1)
+        x_proj = -p[0] / p[2]
+        y_proj = -p[1] / p[2]
+        # Eq. (3): map from projected camera space to screen space
+        sx = args.width * (x_proj + args.s * a) / (2.0 * args.s * a)
+        sy = args.height * (-y_proj + args.s) / (2.0 * args.s)
+        return (sx, sy)
 
     # splat the triangles onto the screen
     screen_vertices = [to_screen(mesh.vertices[vid, :]) for vid in range(mesh.vertices.shape[0])]
@@ -109,6 +116,32 @@ def hw2_2(args):
             # aabb_min & aabb_max like in 2.1
             # c0, c1, c2 from mesh.vertex_colors
             # use mesh.faces[tri_id] to obtain the vertex indices
+
+            face = mesh.faces[tri_id]
+            i0, i1, i2 = face[0], face[1], face[2]
+
+            sp0 = screen_vertices[i0]
+            sp1 = screen_vertices[i1]
+            sp2 = screen_vertices[i2]
+
+            # In camera space, visible points have z < 0
+            # depth d = -z, so inv_depth = 1 / (-z) = -1 / z
+            inv_depth0 = -1.0 / mesh.vertices[i0, 2]
+            inv_depth1 = -1.0 / mesh.vertices[i1, 2]
+            inv_depth2 = -1.0 / mesh.vertices[i2, 2]
+
+            c0 = tuple(mesh.vertex_colors[i0])
+            c1 = tuple(mesh.vertex_colors[i1])
+            c2 = tuple(mesh.vertex_colors[i2])
+
+            # Calculate 2D AABB clamped to image boundaries
+            min_x = math.floor(min(sp0[0], sp1[0], sp2[0]))
+            min_y = math.floor(min(sp0[1], sp1[1], sp2[1]))
+            max_x = math.ceil(max(sp0[0], sp1[0], sp2[0]))
+            max_y = math.ceil(max(sp0[1], sp1[1], sp2[1]))
+
+            aabb_min = (max(0, min_x), max(0, min_y))
+            aabb_max = (min(args.width - 1, max_x), min(args.height - 1, max_y))
 
             if aabb_min[0] > aabb_max[0] or aabb_min[1] > aabb_max[1]:
                 continue
