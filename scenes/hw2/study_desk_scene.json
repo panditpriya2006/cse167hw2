@@ -1,0 +1,414 @@
+{
+  "duration": 8.0,
+  "camera": {
+    "resolution": [
+      800,
+      600
+    ],
+    "s": 0.8,
+    "z_near": 0.001
+  },
+  "background": [
+    0.035,
+    0.055,
+    0.095
+  ],
+  "light": {
+    "light_dir": [
+      0.45,
+      0.75,
+      0.55
+    ],
+    "light_color": [
+      1.0,
+      0.95,
+      0.84
+    ]
+  },
+  "objects": [
+    {
+      "filename": "study_desk_wood.json",
+      "transform": [
+        {
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            -4.2
+          ]
+        }
+      ],
+      "material": {
+        "Kd": [
+          0.55,
+          0.29,
+          0.13
+        ],
+        "Ks": [
+          0.12,
+          0.12,
+          0.12
+        ],
+        "exponent": 24.0
+      }
+    },
+    {
+      "filename": "study_book_blue.json",
+      "transform": [
+        {
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            -4.2
+          ]
+        }
+      ],
+      "material": {
+        "Kd": [
+          0.08,
+          0.28,
+          0.82
+        ],
+        "Ks": [
+          0.12,
+          0.12,
+          0.12
+        ],
+        "exponent": 24.0
+      }
+    },
+    {
+      "filename": "study_book_red.json",
+      "transform": [
+        {
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            -4.2
+          ]
+        }
+      ],
+      "material": {
+        "Kd": [
+          0.82,
+          0.12,
+          0.16
+        ],
+        "Ks": [
+          0.12,
+          0.12,
+          0.12
+        ],
+        "exponent": 24.0
+      }
+    },
+    {
+      "filename": "study_book_gold.json",
+      "transform": [
+        {
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            -4.2
+          ]
+        }
+      ],
+      "material": {
+        "Kd": [
+          0.95,
+          0.62,
+          0.08
+        ],
+        "Ks": [
+          0.12,
+          0.12,
+          0.12
+        ],
+        "exponent": 24.0
+      }
+    },
+    {
+      "filename": "study_notebook.json",
+      "transform": [
+        {
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            -4.2
+          ]
+        }
+      ],
+      "material": {
+        "Kd": [
+          0.92,
+          0.86,
+          0.7
+        ],
+        "Ks": [
+          0.12,
+          0.12,
+          0.12
+        ],
+        "exponent": 24.0
+      }
+    },
+    {
+      "filename": "study_notebook_spine.json",
+      "transform": [
+        {
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            -4.2
+          ]
+        }
+      ],
+      "material": {
+        "Kd": [
+          0.12,
+          0.2,
+          0.38
+        ],
+        "Ks": [
+          0.12,
+          0.12,
+          0.12
+        ],
+        "exponent": 24.0
+      }
+    },
+    {
+      "filename": "study_mug.json",
+      "transform": [
+        {
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            -4.2
+          ]
+        }
+      ],
+      "material": {
+        "Kd": [
+          0.92,
+          0.91,
+          0.82
+        ],
+        "Ks": [
+          0.12,
+          0.12,
+          0.12
+        ],
+        "exponent": 24.0
+      }
+    },
+    {
+      "filename": "study_mug_handle.json",
+      "transform": [
+        {
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            -4.2
+          ]
+        }
+      ],
+      "material": {
+        "Kd": [
+          0.7,
+          0.7,
+          0.66
+        ],
+        "Ks": [
+          0.12,
+          0.12,
+          0.12
+        ],
+        "exponent": 24.0
+      }
+    },
+    {
+      "filename": "study_lamp_base.json",
+      "transform": [
+        {
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            -4.2
+          ]
+        }
+      ],
+      "material": {
+        "Kd": [
+          0.12,
+          0.15,
+          0.2
+        ],
+        "Ks": [
+          0.12,
+          0.12,
+          0.12
+        ],
+        "exponent": 24.0
+      }
+    },
+    {
+      "filename": "study_lamp_stem.json",
+      "transform": [
+        {
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            -4.2
+          ]
+        }
+      ],
+      "material": {
+        "Kd": [
+          0.12,
+          0.15,
+          0.2
+        ],
+        "Ks": [
+          0.12,
+          0.12,
+          0.12
+        ],
+        "exponent": 24.0
+      }
+    },
+    {
+      "filename": "study_lamp_shade.json",
+      "transform": [
+        {
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            -4.2
+          ]
+        }
+      ],
+      "material": {
+        "Kd": [
+          0.98,
+          0.55,
+          0.1
+        ],
+        "Ks": [
+          0.12,
+          0.12,
+          0.12
+        ],
+        "exponent": 24.0
+      }
+    },
+    {
+      "filename": "study_lamp_bulb.json",
+      "transform": [
+        {
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            -4.2
+          ]
+        }
+      ],
+      "material": {
+        "Kd": [
+          1.0,
+          0.86,
+          0.38
+        ],
+        "Ks": [
+          0.12,
+          0.12,
+          0.12
+        ],
+        "exponent": 24.0
+      }
+    }
+  ]
+}
